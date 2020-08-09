@@ -1,7 +1,7 @@
-import express = require('express')
+import express = require('express');
 interface IRouter {
-    getRoutes: () => express.Router
-    setRoutes: () => express.Router
+  getRoutes: () => express.Router;
+  setRoutes: () => express.Router;
 }
 
-export default IRouter
+export default IRouter;

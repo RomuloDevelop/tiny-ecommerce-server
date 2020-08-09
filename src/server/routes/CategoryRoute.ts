@@ -1,21 +1,27 @@
-import IRouter from './IRouter'
-import express = require('express')
+import IRouter from './IRouter';
+import Validator from './Validator';
+import CategoryMapController from '../controllers/CategoryMapController';
+import express = require('express');
 
-class CategoryRoute implements IRouter {
-    private router: express.Router
-    constructor() {
-        this.router = express.Router()
-    }
-    getRoutes() {
-        return this.router
-    }
+class CategoryRoute extends Validator implements IRouter {
+  private router: express.Router;
+  constructor() {
+    super();
+    this.router = express.Router();
+  }
+  getRoutes() {
+    return this.router;
+  }
 
-    setRoutes() {
-        this.router.get('/', (request, response) => {
-            response.send('Hello get category!');
-          });
-          return this.router
-    }    
+  setRoutes() {
+    const categoryController = new CategoryMapController();
+    this.router
+      .get('/', categoryController.getCategories)
+      .get('/:id', categoryController.getCategory)
+      .post('/', this.chainValidation(CategoryMapController.fieldValidator()), categoryController.insertCategory)
+      .delete('/:id', categoryController.deleteCategory);
+    return this.router;
+  }
 }
 
-export default CategoryRoute
+export default CategoryRoute;

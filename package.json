@@ -5,17 +5,20 @@
   "main": "src/index.ts",
   "dependencies": {
     "express": "^4.17.1",
+    "express-validator": "^6.6.1",
     "pg": "^8.3.0",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^6.3.4"
+    "sequelize": "^6.3.4",
+    "typescript": "^3.9.7"
   },
   "devDependencies": {
     "@types/express": "^4.17.7",
+    "@types/express-validator": "^3.0.0",
     "@types/morgan": "^1.9.1",
     "@types/node": "^14.0.27",
     "@types/validator": "^13.1.0",
     "@typescript-eslint/eslint-plugin": "^3.6.0",
-    "@typescript-eslint/parser": "^3.6.0",
+    "@typescript-eslint/parser": "^3.8.0",
     "eslint": "^7.4.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
@@ -29,6 +32,7 @@
     "build": "tsc",
     "prod": "npm run build && node ./dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src --ext .ts --fix",
     "migrate": "sequelize-cli db:migrate",
     "undo:migrate": "sequelize-cli db:migrate:undo",
     "db:create": "sequelize-cli db:create",
@@ -36,6 +40,16 @@
     "migrate:product": "sequelize-cli model:generate --name Product --attributes client_id:integer,title:string,description:string,image:string,price:float",
     "migrate:product_category": "sequelize-cli model:generate --name Product_Category --attributes product_id:integer,category_id:integer",
     "migrate:category_map": "sequelize-cli model:generate --name CategoryMap --attributes client_id:integer,node_id:integer,lft:integer,rgt:integer,parent_id:integer,name:string"
+  },
+  "husky": {
+      "hooks": {
+          "pre-commit": "lint-staged"
+      }
+  },
+  "lint-staged": {
+      "*.ts": [
+          "eslint --fix"
+      ]
   },
   "keywords": [
     "express",

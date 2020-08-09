@@ -1,9 +1,10 @@
 import path = require('path');
-import {Sequelize, Model} from 'sequelize'
-import ClientInit from "./client";
-import ProductInit from "./product";
-import CategoryMapInit from "./categorymap";
-import ProductCategoryInit from "./product_category";
+import { Sequelize, Model } from 'sequelize';
+import ClientInit from './client';
+import ProductInit from './product';
+import CategoryMapInit from './categorymap';
+import ProductCategoryInit from './product_category';
+
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];
@@ -21,8 +22,8 @@ const db = {
   Client: ClientInit(sequelize),
   Product: ProductInit(sequelize),
   CategoryMap: CategoryMapInit(sequelize),
-  Product_Category: ProductCategoryInit(sequelize)
-}
+  Product_Category: ProductCategoryInit(sequelize),
+};
 
 Object.values(db).forEach((modelName) => {
   // @ts-ignore
@@ -32,4 +33,4 @@ Object.values(db).forEach((modelName) => {
   }
 });
 
-export default db
+export default db;

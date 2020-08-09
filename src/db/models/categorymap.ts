@@ -1,38 +1,60 @@
-import {
-  Sequelize,
-  Model,
-  ModelDefined,
-  DataTypes,
-  HasManyGetAssociationsMixin,
-  HasManyAddAssociationMixin,
-  HasManyHasAssociationMixin,
-  Association,
-  HasManyCountAssociationsMixin,
-  HasManyCreateAssociationMixin,
-  Optional,
-} from "sequelize";
+import { Sequelize, Model, DataTypes, Optional, QueryTypes } from 'sequelize';
 
+interface CategoryMapAttributes {
+  id: number | null;
+  client_id: number;
+  node_id: number;
+  lft: number;
+  rgt: number;
+  parent_id: number | null;
+  name: string;
+}
+type CategoryMapCreationAttributes = Optional<CategoryMapAttributes, 'parent_id' | 'id'>;
 export default (sequelize: Sequelize) => {
-  class CategoryMap extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+  class CategoryMap extends Model<CategoryMapAttributes, CategoryMapCreationAttributes> {
+    public id!: number;
+    public client_id!: number;
+    public node_id!: number;
+    public lft!: number;
+    public rgt!: number;
+    public parent_id!: number;
+    public name!: string;
+
+    public readonly createdAt!: Date;
+    public readonly updatedAt!: Date;
+
     static associate(models: any) {
       // define association here
+      this.belongsToMany(models['Product'], { through: models['Product_Category'] });
     }
-  };
-  CategoryMap.init({
-    client_id: DataTypes.INTEGER,
-    node_id: DataTypes.INTEGER,
-    lft: DataTypes.INTEGER,
-    rgt: DataTypes.INTEGER,
-    parent_id: DataTypes.INTEGER,
-    name: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'CategoryMap',
-  });
+
+    static createNodeId(clientId: number) {
+      return sequelize.query(`select get_last_node_id(${clientId})`);
+    }
+    static createNode(clientId: number, parent: number, name: string) {
+      return sequelize.query(`select * from insert_category(${parent}, ${clientId}, '${name}')`, {
+        type: QueryTypes.SELECT,
+      }) as Promise<CategoryMapAttributes[]>;
+    }
+  }
+  CategoryMap.init(
+    {
+      id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      client_id: DataTypes.INTEGER,
+      node_id: DataTypes.INTEGER,
+      lft: DataTypes.INTEGER,
+      rgt: DataTypes.INTEGER,
+      parent_id: DataTypes.INTEGER,
+      name: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: 'CategoryMap',
+    }
+  );
   return CategoryMap;
 };
