@@ -1,4 +1,5 @@
 import { Sequelize, Model, DataTypes, Optional, QueryTypes } from 'sequelize';
+import { ModelsType } from './index';
 
 interface CategoryMapAttributes {
   id: number | null;
@@ -23,7 +24,7 @@ export default (sequelize: Sequelize) => {
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
 
-    static associate(models: any) {
+    static associate(models: ModelsType) {
       // define association here
       this.belongsToMany(models['Product'], { through: models['Product_Category'] });
     }

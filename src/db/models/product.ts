@@ -1,18 +1,5 @@
-import {
-  Sequelize,
-  Model,
-  ModelDefined,
-  DataTypes,
-  HasManyGetAssociationsMixin,
-  HasManyAddAssociationMixin,
-  HasManyHasAssociationMixin,
-  Association,
-  HasManyCountAssociationsMixin,
-  HasManyCreateAssociationMixin,
-  Optional,
-  BelongsToManyOptions,
-} from 'sequelize';
-
+import { Sequelize, Model, DataTypes } from 'sequelize';
+import { ModelsType } from './index';
 interface ProductAttributes {
   client_id: number;
   title: string;
@@ -28,7 +15,7 @@ export default (sequelize: Sequelize) => {
     description!: string;
     image!: string;
     price!: number;
-    static associate(models: any) {
+    static associate(models: ModelsType) {
       // define association here
       this.belongsToMany(models['CategoryMap'], { through: models['Product_Category'] });
     }

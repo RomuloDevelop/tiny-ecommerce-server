@@ -1,13 +1,13 @@
-import path = require('path');
-import { Sequelize, Model } from 'sequelize';
+import { Sequelize } from 'sequelize';
+import sqlFunctions from './functions';
 import ClientInit from './client';
 import ProductInit from './product';
 import CategoryMapInit from './categorymap';
 import ProductCategoryInit from './product_category';
-
-const basename = path.basename(__filename);
+import configjs from '../config/config.json';
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const config = (configjs as any)[env];
 
 let sequelize;
 if (config.use_env_variable) {
@@ -16,21 +16,30 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
-const db = {
-  sequelize,
-  Sequelize,
+const tables = {
   Client: ClientInit(sequelize),
   Product: ProductInit(sequelize),
   CategoryMap: CategoryMapInit(sequelize),
   Product_Category: ProductCategoryInit(sequelize),
 };
 
-Object.values(db).forEach((modelName) => {
-  // @ts-ignore
+type ModelsType = typeof tables;
+
+Object.values(tables).forEach((modelName) => {
   if (modelName.associate) {
-    // @ts-ignore
-    modelName.associate(db);
+    modelName.associate(tables);
   }
 });
+
+const db = {
+  sequelize,
+  Sequelize,
+  async loadDBFunctionsAndProcedures() {
+    await sqlFunctions(this.sequelize);
+  },
+  ...tables,
+};
+
+export { ModelsType };
 
 export default db;

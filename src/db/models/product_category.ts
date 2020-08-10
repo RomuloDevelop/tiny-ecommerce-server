@@ -1,4 +1,5 @@
 import { Sequelize, Model, DataTypes } from 'sequelize';
+import { ModelsType } from './index';
 
 export default (sequelize: Sequelize) => {
   class Product_Category extends Model {
@@ -7,7 +8,7 @@ export default (sequelize: Sequelize) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models: any) {
+    static associate(models: ModelsType) {
       // define association here
     }
   }

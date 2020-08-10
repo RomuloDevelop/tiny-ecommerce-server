@@ -1,16 +1,5 @@
-import {
-  Sequelize,
-  Model,
-  ModelDefined,
-  DataTypes,
-  HasManyGetAssociationsMixin,
-  HasManyAddAssociationMixin,
-  HasManyHasAssociationMixin,
-  Association,
-  HasManyCountAssociationsMixin,
-  HasManyCreateAssociationMixin,
-  Optional,
-} from 'sequelize';
+import { Sequelize, Model, DataTypes } from 'sequelize';
+import { ModelsType } from './index';
 
 interface ClientAttributes {
   name: string;
@@ -27,7 +16,7 @@ export default (sequelize: Sequelize) => {
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
 
-    static associate(models: any) {
+    static associate(models: ModelsType) {
       // define association here
       this.hasMany(models['Product'], { foreignKey: 'client_id' });
       this.hasMany(models['CategoryMap'], { foreignKey: 'client_id' });
