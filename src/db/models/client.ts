@@ -18,8 +18,8 @@ export default (sequelize: Sequelize) => {
 
     static associate(models: ModelsType) {
       // define association here
-      this.hasMany(models['Product'], { foreignKey: 'client_id' });
-      this.hasMany(models['CategoryMap'], { foreignKey: 'client_id' });
+      this.hasMany(models.Product, { foreignKey: 'client_id' });
+      this.hasMany(models.CategoryMap, { foreignKey: 'client_id' });
     }
   }
   Client.init(

@@ -1,6 +1,7 @@
-import { Sequelize, Model, DataTypes } from 'sequelize';
+import { Sequelize, Model, DataTypes, Optional } from 'sequelize';
 import { ModelsType } from './index';
 interface ProductAttributes {
+  id: number | null;
   client_id: number;
   title: string;
   description: string;
@@ -8,8 +9,10 @@ interface ProductAttributes {
   price: number;
 }
 
+type ProductCreationAttributes = Optional<ProductAttributes, 'id'>;
 export default (sequelize: Sequelize) => {
-  class Product extends Model<ProductAttributes> implements ProductAttributes {
+  class Product extends Model<ProductAttributes, ProductCreationAttributes> {
+    id!: number;
     client_id!: number;
     title!: string;
     description!: string;
@@ -17,11 +20,16 @@ export default (sequelize: Sequelize) => {
     price!: number;
     static associate(models: ModelsType) {
       // define association here
-      this.belongsToMany(models['CategoryMap'], { through: models['Product_Category'] });
+      this.belongsToMany(models.CategoryMap, { through: 'Product_Category' });
     }
   }
   Product.init(
     {
+      id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        autoIncrement: true,
+        primaryKey: true,
+      },
       client_id: DataTypes.INTEGER,
       title: DataTypes.STRING,
       description: DataTypes.STRING,

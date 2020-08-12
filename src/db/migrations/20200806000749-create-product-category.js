@@ -6,33 +6,33 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
-      product_id: {
+      ProductId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Products',
-          key: 'id'
+          key: 'id',
         },
       },
-      category_id: {
+      CategoryMapId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'CategoryMaps',
-          key: 'id'
+          key: 'id',
         },
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Product_Categories');
-  }
+  },
 };

@@ -7,10 +7,10 @@ interface CategoryMapAttributes {
   node_id: number;
   lft: number;
   rgt: number;
-  parent_id: number | null;
+  parent_id: number;
   name: string;
 }
-type CategoryMapCreationAttributes = Optional<CategoryMapAttributes, 'parent_id' | 'id'>;
+type CategoryMapCreationAttributes = Optional<CategoryMapAttributes, 'id'>;
 export default (sequelize: Sequelize) => {
   class CategoryMap extends Model<CategoryMapAttributes, CategoryMapCreationAttributes> {
     public id!: number;
@@ -26,7 +26,7 @@ export default (sequelize: Sequelize) => {
 
     static associate(models: ModelsType) {
       // define association here
-      this.belongsToMany(models['Product'], { through: models['Product_Category'] });
+      this.belongsToMany(models.Product, { through: 'Product_Category' });
     }
 
     static createNodeId(clientId: number) {

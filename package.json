@@ -40,7 +40,7 @@
     "db:create": "sequelize-cli db:create",
     "migrate:client": "sequelize-cli model:generate --name Client --attributes name:string,description:string,image:string",
     "migrate:product": "sequelize-cli model:generate --name Product --attributes client_id:integer,title:string,description:string,image:string,price:float",
-    "migrate:product_category": "sequelize-cli model:generate --name Product_Category --attributes product_id:integer,category_id:integer",
+    "migrate:product_category": "sequelize-cli model:generate --name Product_Category --attributes ProductId:integer,CategoryMapId:integer",
     "migrate:category_map": "sequelize-cli model:generate --name CategoryMap --attributes client_id:integer,node_id:integer,lft:integer,rgt:integer,parent_id:integer,name:string"
   },
   "husky": {

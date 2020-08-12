@@ -1,27 +1,37 @@
-import { Sequelize, Model, DataTypes } from 'sequelize';
+import { Sequelize, Model, DataTypes, Optional } from 'sequelize';
 import { ModelsType } from './index';
 
+interface ProductCategoryAttributes {
+  id: number | null;
+  ProductId: number;
+  CategoryMapId: number;
+}
+
+type ProductCategoryCreationAttributes = Optional<ProductCategoryAttributes, 'id'>;
 export default (sequelize: Sequelize) => {
-  class Product_Category extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+  class Product_Category extends Model<ProductCategoryAttributes, ProductCategoryCreationAttributes> {
+    id!: number;
+    ProductId!: number;
+    CategoryMapId!: number;
     static associate(models: ModelsType) {
       // define association here
     }
   }
   Product_Category.init(
     {
-      product_id: {
+      id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      ProductId: {
         type: DataTypes.INTEGER,
         references: {
           model: 'Product',
           key: 'id',
         },
       },
-      category_id: {
+      CategoryMapId: {
         type: DataTypes.INTEGER,
         references: {
           model: 'CategoryMap',
