@@ -32,9 +32,9 @@
     "sequelize-cli": "^6.2.0"
   },
   "scripts": {
-    "start": "nodemon",
+    "start": "npm run build && node ./dist/index.js",
     "build": "tsc",
-    "prod": "npm run build && node ./dist/index.js",
+    "dev": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src --ext .ts --fix",
     "migrate": "sequelize-cli db:migrate",
