@@ -55,6 +55,26 @@ const insertCategoryNode = `
         return new_row;
     end; $$`;
 
+// const deleteCategoyNode = `
+//     SELECT lft, rgt, (rgt - lft), (rgt - lft + 1), parent_id
+//       INTO new_lft, new_rgt, has_leafs, width, superior_parent
+//       FROM tree_map WHERE node_id = pnode_id;
+
+//     DELETE FROM tree_content WHERE node_id = pnode_id;
+
+//     IF (has_leafs = 1) THEN
+//       DELETE FROM tree_map WHERE lft BETWEEN new_lft AND new_rgt;
+//       UPDATE tree_map SET rgt = rgt - width WHERE rgt > new_rgt;
+//       UPDATE tree_map SET lft = lft - width WHERE lft > new_rgt;
+//     ELSE
+//       DELETE FROM tree_map WHERE lft = new_lft;
+//       UPDATE tree_map SET rgt = rgt - 1, lft = lft - 1, parent_id = superior_parent
+//        WHERE lft BETWEEN new_lft AND new_rgt;
+//       UPDATE tree_map SET rgt = rgt - 2 WHERE rgt > new_rgt;
+//       UPDATE tree_map SET lft = lft - 2 WHERE lft > new_rgt;
+//     END IF;
+// `;
+
 const insertFirstCategoryNode = `
     create or replace function insert_category_node()
     returns trigger

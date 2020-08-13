@@ -2,17 +2,21 @@ import { Sequelize, Model, DataTypes, Optional } from 'sequelize';
 import { ModelsType } from './index';
 
 interface ProductCategoryAttributes {
-  id: number | null;
+  id: number;
   ProductId: number;
   CategoryMapId: number;
 }
 
-type ProductCategoryCreationAttributes = Optional<ProductCategoryAttributes, 'id'>;
+interface ProductCategoryCreationAttributes extends Optional<ProductCategoryAttributes, 'id'> {}
 export default (sequelize: Sequelize) => {
   class Product_Category extends Model<ProductCategoryAttributes, ProductCategoryCreationAttributes> {
     id!: number;
     ProductId!: number;
     CategoryMapId!: number;
+
+    public readonly createdAt!: Date;
+    public readonly updatedAt!: Date;
+
     static associate(models: ModelsType) {
       // define association here
     }

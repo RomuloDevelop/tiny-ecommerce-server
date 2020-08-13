@@ -1,8 +1,12 @@
 import db from '../../db/models';
 import { Response, Request } from 'express';
 import { body } from 'express-validator';
-const { CategoryMap } = db;
+import { Model } from 'sequelize';
+const { CategoryMap, Product } = db;
 
+class ProductByCategory extends CategoryMap {
+  Products!: typeof Product[];
+}
 class CategoryMapController {
   async getCategories(req: Request, res: Response) {
     try {
@@ -19,6 +23,27 @@ class CategoryMapController {
       const { id } = req.params;
       const category = await CategoryMap.findByPk(id);
       res.json(category);
+    } catch (err) {
+      res.status(500).send(err.message);
+      console.error(err);
+    }
+  }
+  async getProducts(req: Request, res: Response) {
+    try {
+      const id = parseInt(req.params.id);
+      const category = await ProductByCategory.findAll({
+        where: {
+          id,
+        },
+        include: {
+          model: Product as typeof Model,
+          through: {
+            attributes: [],
+          },
+          required: true,
+        },
+      });
+      res.json(category[0].Products);
     } catch (err) {
       res.status(500).send(err.message);
       console.error(err);

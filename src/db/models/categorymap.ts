@@ -2,7 +2,7 @@ import { Sequelize, Model, DataTypes, Optional, QueryTypes } from 'sequelize';
 import { ModelsType } from './index';
 
 interface CategoryMapAttributes {
-  id: number | null;
+  id: number;
   client_id: number;
   node_id: number;
   lft: number;
@@ -10,7 +10,7 @@ interface CategoryMapAttributes {
   parent_id: number;
   name: string;
 }
-type CategoryMapCreationAttributes = Optional<CategoryMapAttributes, 'id'>;
+interface CategoryMapCreationAttributes extends Optional<CategoryMapAttributes, 'id'> {}
 export default (sequelize: Sequelize) => {
   class CategoryMap extends Model<CategoryMapAttributes, CategoryMapCreationAttributes> {
     public id!: number;

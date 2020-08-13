@@ -4,6 +4,7 @@
   "description": "Lykos server",
   "main": "src/index.ts",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-validator": "^6.6.1",
     "pg": "^8.3.0",
@@ -12,6 +13,7 @@
     "typescript": "^3.9.7"
   },
   "devDependencies": {
+    "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.7",
     "@types/express-validator": "^3.0.0",
     "@types/morgan": "^1.9.1",

@@ -18,6 +18,7 @@ class CategoryRoute extends Validator implements IRouter {
     this.router
       .get('/', categoryController.getCategories)
       .get('/:id', categoryController.getCategory)
+      .get('/:id/products', categoryController.getProducts)
       .post('/', this.chainValidation(CategoryMapController.fieldValidator()), categoryController.insertCategory)
       .delete('/:id', categoryController.deleteCategory);
     return this.router;
