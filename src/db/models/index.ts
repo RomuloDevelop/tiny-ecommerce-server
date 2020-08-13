@@ -4,15 +4,14 @@ import ClientInit from './client';
 import ProductInit from './product';
 import CategoryMapInit from './categorymap';
 import ProductCategoryInit from './product_category';
-import configjs from '../config/config';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const configjs = require('../config/config');
 const env = process.env.NODE_ENV || 'development';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const config = (configjs as any)[env];
 let sequelize;
 if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable] as string, config);
-} else if (process.env.DATABASE_URL) {
-  sequelize = new Sequelize(process.env.DATABASE_URL);
+  sequelize = new Sequelize(config.use_env_variable as string, config);
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }

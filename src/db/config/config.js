@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   development: {
     username: process.env.DB_DEV_USERNAME,
     password: process.env.DB_DEV_PASSWORD,
@@ -16,11 +16,6 @@ export default {
     dialect: 'postgres',
   },
   production: {
-    username: process.env.DB_PROD_USERNAME,
-    password: process.env.DB_PROD_PASSWORD,
-    database: process.env.DB_PROD,
-    host: process.env.DB_PROD_HOST,
-    port: process.env.DB_PROD_PORT,
-    dialect: 'postgres',
+    use_env_variable: process.env.DATABASE_URL,
   },
 };

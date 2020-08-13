@@ -22,6 +22,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^3.6.0",
     "@typescript-eslint/parser": "^3.8.0",
+    "cross-env": "^7.0.2",
     "eslint": "^7.4.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
@@ -35,6 +36,7 @@
     "start": "npm run build && node ./dist/index.js",
     "build": "tsc",
     "dev": "nodemon",
+    "prod": "cross-env NODE_ENV=production nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src --ext .ts --fix",
     "migrate": "sequelize-cli db:migrate",
