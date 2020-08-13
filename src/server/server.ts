@@ -31,8 +31,14 @@ export default class Server {
     this.app.get('/', (req, res) => res.send('Welcome'));
   }
   middlewares() {
-    this.app.use(morgan('tiny'));
+    if (process.env.NODE_ENV === 'development') {
+      this.devMiddlewares();
+    }
     this.app.use(express.json());
     this.routes();
+  }
+
+  devMiddlewares() {
+    this.app.use(morgan('tiny'));
   }
 }
