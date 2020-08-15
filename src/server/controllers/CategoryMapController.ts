@@ -69,10 +69,8 @@ class CategoryMapController {
 
   async deleteCategory(req: Request, res: Response) {
     try {
-      const { id } = req.params;
-      const category = await CategoryMap.destroy({
-        where: { id },
-      });
+      const { client_id, node } = req.body;
+      const category = (await CategoryMap.deleteNode(client_id, node))[0];
       res.json(category);
     } catch (err) {
       res.status(500).send(err.message);

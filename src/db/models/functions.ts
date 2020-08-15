@@ -55,25 +55,40 @@ const insertCategoryNode = `
         return new_row;
     end; $$`;
 
-// const deleteCategoyNode = `
-//     SELECT lft, rgt, (rgt - lft), (rgt - lft + 1), parent_id
-//       INTO new_lft, new_rgt, has_leafs, width, superior_parent
-//       FROM tree_map WHERE node_id = pnode_id;
-
-//     DELETE FROM tree_content WHERE node_id = pnode_id;
-
-//     IF (has_leafs = 1) THEN
-//       DELETE FROM tree_map WHERE lft BETWEEN new_lft AND new_rgt;
-//       UPDATE tree_map SET rgt = rgt - width WHERE rgt > new_rgt;
-//       UPDATE tree_map SET lft = lft - width WHERE lft > new_rgt;
-//     ELSE
-//       DELETE FROM tree_map WHERE lft = new_lft;
-//       UPDATE tree_map SET rgt = rgt - 1, lft = lft - 1, parent_id = superior_parent
-//        WHERE lft BETWEEN new_lft AND new_rgt;
-//       UPDATE tree_map SET rgt = rgt - 2 WHERE rgt > new_rgt;
-//       UPDATE tree_map SET lft = lft - 2 WHERE lft > new_rgt;
-//     END IF;
-// `;
+const deleteCategoyNode = `
+    create or replace function delete_category(node int, client int)
+    returns public."CategoryMaps"
+    language plpgsql
+    as $$
+       declare
+           new_lft integer;
+           new_rgt integer;
+           has_leafs integer;
+           width integer;
+           superior_parent integer;
+           deleted_row public."CategoryMaps"%ROWTYPE;
+       begin
+        SELECT * INTO deleted_row FROM public."CategoryMaps" WHERE node_id = node and client_id = client;
+                
+        SELECT lft, rgt, (rgt - lft), (rgt - lft + 1), parent_id
+          INTO new_lft, new_rgt, has_leafs, width, superior_parent
+          FROM public."CategoryMaps" WHERE node_id = node and client_id = client;
+        IF (has_leafs = 1) THEN
+          DELETE FROM public."CategoryMaps" WHERE client_id = client and lft BETWEEN new_lft AND new_rgt;
+          UPDATE public."CategoryMaps" SET rgt = rgt - width WHERE rgt > new_rgt and client_id = client;
+          UPDATE public."CategoryMaps" SET lft = lft - width WHERE lft > new_rgt and client_id = client;
+        ELSE
+          DELETE FROM public."CategoryMaps" WHERE lft = new_lft and client_id = client;
+          UPDATE public."CategoryMaps" SET rgt = rgt - 1, lft = lft - 1, parent_id = superior_parent
+           WHERE client_id = client and lft BETWEEN new_lft AND new_rgt;
+          UPDATE public."CategoryMaps" SET rgt = rgt - 2 WHERE rgt > new_rgt and client_id = client;
+          UPDATE public."CategoryMaps" SET lft = lft - 2 WHERE lft > new_rgt and client_id = client;
+        END IF;
+                
+        return deleted_row;
+       end;
+    $$
+`;
 
 const insertFirstCategoryNode = `
     create or replace function insert_category_node()
@@ -102,6 +117,7 @@ const sqlFunctionsAndTriggers = [
   getLasNodeForCategory,
   insertCategoryNode,
   insertFirstCategoryNode,
+  deleteCategoyNode,
   triggerForFirstNode,
 ];
 export default async (sequelize: Sequelize) => {

@@ -37,6 +37,11 @@ export default (sequelize: Sequelize) => {
         type: QueryTypes.SELECT,
       }) as Promise<CategoryMapAttributes[]>;
     }
+    static deleteNode(clientId: number, node: number) {
+      return sequelize.query(`select * from delete_category(${node}, ${clientId})`, {
+        type: QueryTypes.SELECT,
+      }) as Promise<CategoryMapAttributes[]>;
+    }
   }
   CategoryMap.init(
     {
