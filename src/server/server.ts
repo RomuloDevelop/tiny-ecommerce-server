@@ -1,5 +1,6 @@
 import express = require('express');
 import morgan from 'morgan';
+import cors from 'cors';
 import Routes from './routes';
 import db from '../db/models';
 export default class Server {
@@ -34,6 +35,7 @@ export default class Server {
     if (process.env.NODE_ENV === 'development') {
       this.devMiddlewares();
     }
+    this.app.use(cors());
     this.app.use(express.json());
     this.routes();
   }
