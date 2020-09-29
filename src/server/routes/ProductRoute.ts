@@ -1,7 +1,7 @@
-import IRouter from './IRouter';
+import IRouter from './shared/IRouter';
 import ProductController from '../controllers/ProductController';
 import express = require('express');
-import Validator from './Validator';
+import Validator from './shared/Validator';
 class ProductsRoutes extends Validator implements IRouter {
   private router: express.Router;
   constructor() {

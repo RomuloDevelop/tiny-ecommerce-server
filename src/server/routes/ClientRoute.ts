@@ -1,5 +1,5 @@
-import IRouter from './IRouter';
-import Validator from './Validator';
+import IRouter from './shared/IRouter';
+import Validator from './shared/Validator';
 import ClientController from '../controllers/ClientController';
 import express = require('express');
 

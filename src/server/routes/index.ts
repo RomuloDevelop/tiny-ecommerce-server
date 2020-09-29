@@ -1,4 +1,4 @@
-import IRouter from './IRouter';
+import IRouter from './shared/IRouter';
 import express = require('express');
 import ClientRoute from './ClientRoute';
 import CategoryRoute from './CategoryRoute';

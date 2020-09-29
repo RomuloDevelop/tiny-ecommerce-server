@@ -1,10 +1,9 @@
 module.exports = {
   development: {
-    username: process.env.DB_DEV_USERNAME,
-    password: process.env.DB_DEV_PASSWORD,
-    database: process.env.DB_DEV,
-    host: process.env.DB_DEV_HOST,
-    port: process.env.DB_DEV_PORT,
+    username: process.env.DB_DEV_USERNAME || 'postgres',
+    password: process.env.DB_DEV_PASSWORD || 'Gabriel-00',
+    database: process.env.DB_DEV || 'lykos_development',
+    host: process.env.DB_DEV_HOST || '127.0.0.1',
     dialect: 'postgres',
   },
   test: {
