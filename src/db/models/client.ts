@@ -12,8 +12,9 @@ interface ClientAttributes {
 
 interface ClientUpdateAttributes extends Partial<Omit<ClientAttributes, 'id'>> {}
 
+interface ClientCreationAttributes extends Optional<ClientAttributes, 'id'> {}
+
 export default (sequelize: Sequelize) => {
-  interface ClientCreationAttributes extends Optional<ClientAttributes, 'id'> {}
   class Client extends Model<ClientAttributes, ClientCreationAttributes> {
     public id!: number;
     public name!: string;
@@ -62,4 +63,4 @@ export default (sequelize: Sequelize) => {
   );
   return Client;
 };
-export { ClientUpdateAttributes };
+export { ClientCreationAttributes, ClientUpdateAttributes };
