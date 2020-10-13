@@ -1,14 +1,18 @@
+import passport from 'passport';
 import IRouter from './shared/IRouter';
 import express = require('express');
+import AuthRoute from './AuthRoute';
 import ClientRoute from './ClientRoute';
 import CategoryRoute from './CategoryRoute';
 import ProductRoute from './ProductRoute';
 class Routes implements IRouter {
+  private authRoute: AuthRoute;
   private clientRoute: ClientRoute;
   private categoryRoute: CategoryRoute;
   private productRoute: ProductRoute;
   private routers: express.Router;
   constructor() {
+    this.authRoute = new AuthRoute();
     this.clientRoute = new ClientRoute();
     this.categoryRoute = new CategoryRoute();
     this.productRoute = new ProductRoute();
@@ -18,12 +22,14 @@ class Routes implements IRouter {
     return this.routers;
   }
   setRoutes() {
+    this.authRoute.setRoutes();
     this.clientRoute.setRoutes();
     this.categoryRoute.setRoutes();
     this.productRoute.setRoutes();
-    this.routers.use('/client', this.clientRoute.getRoutes());
-    this.routers.use('/category', this.categoryRoute.getRoutes());
-    this.routers.use('/product', this.productRoute.getRoutes());
+    this.routers.use('/auth', this.authRoute.getRoutes());
+    this.routers.use('/client', passport.authenticate('jwt', { session: false }), this.clientRoute.getRoutes());
+    this.routers.use('/category', passport.authenticate('jwt', { session: false }), this.categoryRoute.getRoutes());
+    this.routers.use('/product', passport.authenticate('jwt', { session: false }), this.productRoute.getRoutes());
     this.routers.get('/routes', (req, res) => res.send(this.listOfRoutes()));
     return this.routers;
   }

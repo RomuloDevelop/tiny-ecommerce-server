@@ -1,6 +1,8 @@
 import express = require('express');
 import morgan from 'morgan';
 import cors from 'cors';
+import passport from 'passport';
+import passportStrategy from './middlewares/passport';
 import Routes from './routes';
 import db from '../db/models';
 export default class Server {
@@ -37,6 +39,7 @@ export default class Server {
     }
     this.app.use(cors());
     this.app.use(express.json());
+    this.app.use(passportStrategy(passport).initialize());
     this.routes();
   }
 
